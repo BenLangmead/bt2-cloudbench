@@ -81,8 +81,8 @@ Vagrant.configure("2") do |config|
         git clone --recursive https://github.com/BenLangmead/bowtie2.git /bowtie2 \
             && cd /bowtie2 \
             && git checkout v2.4.1 \
-            && sed -i .bak 's/CXXFLAGS :=/CXXFLAGS +=/' Makefile \
-            && sed -i .bak 's/CPPFLAGS :=/CPPFLAGS +=/' Makefile \
+            && sed -i.bak 's/CXXFLAGS :=/CXXFLAGS +=/' Makefile \
+            && sed -i.bak 's/CPPFLAGS :=/CPPFLAGS +=/' Makefile \
             && make POPCNT_CAPABILITY=0 bowtie2-align-s
     SHELL
 end
