@@ -1,0 +1,8 @@
+{
+  "app": {
+    "name": "bt2-bench",
+    "bucket": "bt2-bench",
+    "eff-reads-dir": "bt2-bench/reads-efficiency",
+    "vargas-reads-dir": "bt2-bench/reads"
+  }
+}
