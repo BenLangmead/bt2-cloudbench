@@ -65,11 +65,12 @@ def go():
     app_filter = '"Name=tag:Application,Values=%s"' % app
     running_filter = '"Name=instance-state-name,Values=running"'
     cmd = ['aws', '--profile', aws_prof, 'ec2', 'describe-instances', '--filters', app_filter, running_filter]
-    tmp_json_fn = '.terminate_lists.py'
+    tmp_json_fn = '.terminate_insts.py'
     exitlevel = os.system(' '.join(cmd) + ' > ' + tmp_json_fn)
     if exitlevel != 0:
         raise RuntimeError('Exitlevel from describe-instances command was %d' % exitlevel)
     js = json.loads(open(tmp_json_fn, 'rt').read())
+    os.remove(tmp_json_fn)
     reservations = js['Reservations']
     for reservation in reservations:
         instances = reservation['Instances']
@@ -80,6 +81,8 @@ def go():
                 exitlevel = os.system(' '.join(cmd))
                 if exitlevel != 0:
                     raise RuntimeError('Exitlevel from terminate-instances command for "%s" was %d' % (iid, exitlevel))
+    else:
+        print("No instances running")
 
 
 if __name__ == '__main__':
