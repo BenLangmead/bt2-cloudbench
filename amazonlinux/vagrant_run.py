@@ -194,10 +194,12 @@ def run(profile, task, inst, dest_dir, ini_fn, section, no_destroy, creds_file='
         fh.write('rm -f .creds.tmp\n')
     with open(destroy_scr, 'wt') as fh:
         _write_exports(fh)
-        fh.write('vagrant destroy -f\n')
+        fh.write('touch .creds.tmp && vagrant destroy -f\n')
+        fh.write('rm -f .creds.tmp\n')
     with open(ssh_scr, 'wt') as fh:
         _write_exports(fh)
-        fh.write('vagrant ssh\n')
+        fh.write('touch .creds.tmp && vagrant ssh\n')
+        fh.write('rm -f .creds.tmp\n')
     slack_scr_in = 'slack_template.py'
     if not os.path.exists(slack_scr_in):
         raise RuntimeError('Cannot find slack template script')
