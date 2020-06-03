@@ -64,7 +64,7 @@ def go():
     print('App: ' + app)
     print('Region: ' + region)
     print('AWS profile: ' + aws_prof)
-    cmd = 'aws --profile %s ec2 describe-instances --filters "Name=tag:Application,Values=%s"' % (aws_prof, app)
+    cmd = 'aws --profile %s ec2 describe-instances --filters "Name=tag:Application,Values=%s" "Name=instance-state-name,Values=running"' % (aws_prof, app)
     os.system(cmd)
 
 
