@@ -78,7 +78,8 @@ def load_json(json_fn, json_dict, needs_key=None):
 
 def parse_app_json(js):
     app = js['app']['name']
-    return app, [('VAGRANT_APPLICATION', app)]
+    bucket = js['app']['bucket']
+    return app, bucket, [('VAGRANT_APPLICATION', app), ('VAGRANT_BUCKET', bucket)]
 
 
 def parse_profile_json(js, prof):
@@ -116,6 +117,11 @@ def parse_instance_json(js, region, instance=None):
             ('VAGRANT_AWS_EC2_BID_PRICE', bid_price)]
 
 
+def parse_task_json(js):
+    task = js['task']
+    return task, [('VAGRANT_TASK', task)]
+
+
 def choose_az_and_subnet(js, prof, region, inst):
     if 'azs' in js['ec2']['instance_type'][inst] and \
             region in js['ec2']['instance_type'][inst]['azs']:
@@ -142,13 +148,14 @@ def load_aws_json(profile_json, app_json, task_json, inst_json, ec2_json,
     if inst_json is not None:
         load_json(inst_json, js, needs_key='instance')
 
-    app, app_param = parse_app_json(js)
+    app, bucket, app_param = parse_app_json(js)
     prof, aws_prof, region, security_group, profile_param = parse_profile_json(js, profile)
     inst, arch, ami, bid_price, instance_param = parse_instance_json(js, region, instance=instance)
+    task, task_param = parse_task_json(js)
     keypair = app + '-' + region
     keypair_param = [('VAGRANT_AWS_EC2_KEYPAIR', keypair)]
     subnet, az, subnet_param = choose_az_and_subnet(js, prof, region, inst)
-    params = app_param + profile_param + instance_param + keypair_param + subnet_param + [('VAGRANT_AWS_CREDS', '.creds.tmp')]
+    params = app_param + profile_param + instance_param + keypair_param + subnet_param + task_param + [('VAGRANT_AWS_CREDS', '.creds.tmp')]
     return app, region, subnet, az, security_group, ami, keypair, bid_price, inst, arch, prof, aws_prof, params
 
 
@@ -168,7 +175,10 @@ def run(profile, task, inst, dest_dir, ini_fn, section, no_destroy, creds_file='
     vagrant_args = ''
     if no_destroy:
         vagrant_args += ' --no-destroy-on-error'
-    shutil.copyfile(os.path.join(task, 'Vagrantfile'), os.path.join(dest_dir, 'Vagrantfile'))
+    for base_fn in os.listdir(task):
+        fn = os.path.join(task, base_fn)
+        if os.path.isfile(fn):
+            shutil.copyfile(fn, os.path.join(dest_dir, base_fn))
 
     def _write_exports(export_fh):
         # TODO: move the credentials file parsing to here; better to do it in the script
