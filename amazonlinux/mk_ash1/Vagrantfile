@@ -76,27 +76,21 @@ Vagrant.configure("2") do |config|
 
     config.vm.provision "shell", privileged: true, name: "install BT2", env: {"ARCH" => ENV['VAGRANT_AWS_EC2_ARCH']}, path: "build_bt2.bash"
 
-    config.vm.provision "shell", privileged: true, name: "NCBI/GRCz10",
-        env: {"BUCKET" => ENV['VAGRANT_BUCKET']}, path: "build_igenomes.bash",
-        args: "Danio_rerio NCBI GRCz10"
-
-    config.vm.provision "shell", privileged: true, name: "Ensembl/BDGP6",
-        env: {"BUCKET" => ENV['VAGRANT_BUCKET']}, path: "build_igenomes.bash",
-        args: "Drosophila_melanogaster Ensembl BDGP6"
-
-    config.vm.provision "shell", privileged: true, name: "Ensembl/Galgal4",
-        env: {"BUCKET" => ENV['VAGRANT_BUCKET']}, path: "build_igenomes.bash",
-        args: "Gallus_gallus Ensembl Galgal4"
-
-    config.vm.provision "shell", privileged: true, name: "Ensembl/CHIMP2.1.4",
-        env: {"BUCKET" => ENV['VAGRANT_BUCKET']}, path: "build_igenomes.bash",
-        args: "Pan_troglodytes Ensembl CHIMP2.1.4"
-
-    config.vm.provision "shell", privileged: true, name: "NCBI/Rnor_6.0",
-        env: {"BUCKET" => ENV['VAGRANT_BUCKET']}, path: "build_igenomes.bash",
-        args: "Rattus_norvegicus NCBI Rnor_6.0"
-
-    config.vm.provision "shell", privileged: true, name: "Ensembl/AGPv4",
-        env: {"BUCKET" => ENV['VAGRANT_BUCKET']}, path: "build_igenomes.bash",
-        args: "Zea_mays Ensembl AGPv4"
+    config.vm.provision "shell", privileged: true, name: "build ASH1", env: {"BUCKET" => ENV['VAGRANT_BUCKET']}, inline: <<-SHELL
+        cd /work \
+            && ASM="Ash1v1.7" \
+            && wget "https://ashkenazi-genome.s3.us-east-2.amazonaws.com/Assembly/${ASM}.fa.gz" \
+            && gunzip "${ASM}.fa.gz" \
+            && /work/bowtie2/bowtie2-build --threads 8 "${ASM}.fa" "${ASM}" \
+            && rm -f "${ASM}.fa" \
+            && mkdir -p "${ASM}" \
+            && mv ${ASM}*.bt2 "${ASM}" \
+            && for i in 1.bt2 2.bt2 3.bt2 4.bt2 rev.1.bt2 rev.2.bt2 ; do \
+                   aws s3 cp --quiet "${ASM}/${ASM}.$i" s3://${BUCKET}/indexes/ ; \
+               done \
+            && zip "${ASM}.zip" -r "${ASM}" \
+            && rm -rf "${ASM}" \
+            && aws s3 cp --quiet "${ASM}.zip" s3://${BUCKET}/indexes/ \
+            && rm -f "${ASM}.zip"
+    SHELL
 end
