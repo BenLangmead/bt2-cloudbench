@@ -12,7 +12,7 @@ BN="${SPECIES}_${REPO}_${ASM}"
 BN_TGZ="${BN}.tar.gz"
 URL="${URL_BASE}/${SPECIES}/${REPO}/${ASM}/${BN_TGZ}"
 
-wget "${URL}"
+wget --quiet "${URL}"
 tar zxvf "${BN_TGZ}"
 rm -f "${BN_TGZ}"
 
