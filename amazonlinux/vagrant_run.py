@@ -23,7 +23,6 @@ import os
 import sys
 import json
 import collections
-import stat
 import shutil
 
 from docopt import docopt
@@ -229,7 +228,7 @@ def run(profile, task, inst, dest_dir, ini_fn, section, no_destroy, creds_file='
         fh.write('\n\nif __name__ == "__main__":\n')
         fh.write('    make_creds_file("%s", "%s")\n' % (aws_prof, creds_file))
     for scr in [run_scr, run_nd_scr, destroy_scr, ssh_scr, slack_scr, creds_scr]:
-        os.chmod(scr, stat.S_IEXEC)
+        os.chmod(scr, 0o700)
 
 
 def go():
