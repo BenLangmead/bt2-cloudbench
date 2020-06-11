@@ -81,7 +81,7 @@ Vagrant.configure("2") do |config|
             && ASM="Ash1v1.7" \
             && wget "https://ashkenazi-genome.s3.us-east-2.amazonaws.com/Assembly/${ASM}.fa.gz" \
             && gunzip "${ASM}.fa.gz" \
-            && /work/bowtie2/bowtie2-build --threads 8 "${ASM}.fa" "${ASM}" \
+            && /work/bowtie2/bowtie2-build-s --threads 8 "${ASM}.fa" "${ASM}" \
             && rm -f "${ASM}.fa" \
             && mkdir -p "${ASM}" \
             && mv ${ASM}*.bt2 "${ASM}" \
