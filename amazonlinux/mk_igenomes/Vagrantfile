@@ -95,4 +95,28 @@ Vagrant.configure("2") do |config|
     config.vm.provision "shell", privileged: true, name: "Ensembl/AGPv4",
         env: {"BUCKET" => ENV['VAGRANT_BUCKET']}, path: "build_igenomes.bash",
         args: "Zea_mays Ensembl AGPv4"
+
+    config.vm.provision "shell", privileged: true, name: "Ensembl/WBcel235",
+        env: {"BUCKET" => ENV['VAGRANT_BUCKET']}, path: "build_igenomes.bash",
+        args: "Caenorhabditis_elegans Ensembl WBcel235"
+
+    config.vm.provision "shell", privileged: true, name: "NCBI/WS195",
+        env: {"BUCKET" => ENV['VAGRANT_BUCKET']}, path: "build_igenomes.bash",
+        args: "Caenorhabditis_elegans NCBI WS195"
+
+    config.vm.provision "shell", privileged: true, name: "Ensembl/CanFam3.1",
+        env: {"BUCKET" => ENV['VAGRANT_BUCKET']}, path: "build_igenomes.bash",
+        args: "Canis_familiaris Ensembl CanFam3.1"
+
+    config.vm.provision "shell", privileged: true, name: "NCBI/GRCm38",
+        env: {"BUCKET" => ENV['VAGRANT_BUCKET']}, path: "build_igenomes.bash",
+        args: "Mus_musculus NCBI GRCm38"
+
+    config.vm.provision "shell", privileged: true, name: "Ensembl/R64-1-1",
+        env: {"BUCKET" => ENV['VAGRANT_BUCKET']}, path: "build_igenomes.bash",
+        args: "Saccharomyces_cerevisiae Ensembl R64-1-1"
+
+    config.vm.provision "shell", privileged: true, name: "Ensembl/GRCh37",
+        env: {"BUCKET" => ENV['VAGRANT_BUCKET']}, path: "build_igenomes.bash",
+        args: "Homo_sapiens Ensembl GRCh37"
 end
