@@ -99,9 +99,11 @@ def parse_reads():
     reads = []
     with open('get.sh', 'rt') as fh:
         for ln in fh:
-            tok = ln.split()[0]
-            if tok.startswith('ftp://') and tok.endswith('_1.fastq.gz'):
-                reads.append(os.path.basename(tok[:-3]))
+            toks = ln.split()
+            if len(toks) > 0:
+                tok = toks[0]
+                if tok.startswith('ftp://') and tok.endswith('_1.fastq.gz'):
+                    reads.append(os.path.basename(tok[:-3]))
     return reads
 
 
