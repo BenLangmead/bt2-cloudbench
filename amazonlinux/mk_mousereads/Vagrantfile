@@ -78,11 +78,10 @@ Vagrant.configure("2") do |config|
     SHELL
 
     config.vm.provision "file", source: "reads.py", destination: "/work/reads.py"
+    config.vm.provision "file", source: "get.sh", destination: "/work/get.sh"
 
     config.vm.provision "shell", privileged: true, name: "get mouse reads", path: "get.sh"
-
     config.vm.provision "shell", privileged: true, name: "generate mouse reads file", path: "reads100.sh"
-
     config.vm.provision "shell", privileged: true, name: "upload mouse reads", inline: <<-SHELL
         cd /work \
             && (for i in *.fastq ; do aws s3 cp --quiet $i s3://${BUCKET}/reads/mouse/ ; done || exit 1)
