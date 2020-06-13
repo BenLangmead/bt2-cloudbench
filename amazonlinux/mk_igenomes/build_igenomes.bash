@@ -13,7 +13,13 @@ BN_TGZ="${BN}.tar.gz"
 URL="${URL_BASE}/${SPECIES}/${REPO}/${ASM}/${BN_TGZ}"
 
 wget --quiet "${URL}"
-tar zxvf "${BN_TGZ}"
+tar -xvzf "${BN_TGZ}" \
+  "${SPECIES}/${REPO}/${ASM}/Sequence/Bowtie2Index/genome.1.bt2" \
+  "${SPECIES}/${REPO}/${ASM}/Sequence/Bowtie2Index/genome.2.bt2" \
+  "${SPECIES}/${REPO}/${ASM}/Sequence/Bowtie2Index/genome.3.bt2" \
+  "${SPECIES}/${REPO}/${ASM}/Sequence/Bowtie2Index/genome.4.bt2" \
+  "${SPECIES}/${REPO}/${ASM}/Sequence/Bowtie2Index/genome.rev.1.bt2" \
+  "${SPECIES}/${REPO}/${ASM}/Sequence/Bowtie2Index/genome.rev.2.bt2"
 rm -f "${BN_TGZ}"
 
 mkdir "${ASM}"
