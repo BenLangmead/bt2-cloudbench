@@ -81,7 +81,7 @@ Vagrant.configure("2") do |config|
             && ASM="GRCz11" \
             && ASM_LONG="GCF_000002035.6_${ASM}" \
             && FA="${ASM_LONG}_genomic.fna" \
-            && wget "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/035/${ASM_LONG}/${FA}.gz" \
+            && wget --quiet "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/035/${ASM_LONG}/${FA}.gz" \
             && gunzip "${FA}.gz" \
             && echo "Sequences:" \
             && grep '^>' ${FA} \
