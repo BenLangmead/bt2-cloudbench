@@ -81,35 +81,35 @@ Vagrant.configure("2") do |config|
     # https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/263/795/GCF_002263795.1_ARS-UCD1.2/
     config.vm.provision "shell", privileged: true, name: "NCBI/ARS-UCD1.2",
         env: {"BUCKET" => ENV['VAGRANT_BUCKET']}, path: "build_ncbi.bash",
-        args: "Bos_taurus ARS-UCD1.2 GCF_002263795.1"
+        args: "ARS-UCD1.2 GCF_002263795.1 Bos_taurus"
 
     # https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/035/GCF_000002035.6_GRCz11/
     config.vm.provision "shell", privileged: true, name: "NCBI/GRCz11",
         env: {"BUCKET" => ENV['VAGRANT_BUCKET']}, path: "build_ncbi.bash",
-        args: "Danio_rerio GRCz11 GCF_000002035.6"
+        args: "GRCz11 GCF_000002035.6 Danio_rerio"
 
     # https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/339/765/GCF_003339765.1_Mmul_10/
     config.vm.provision "shell", privileged: true, name: "NCBI/Mmul_10",
         env: {"BUCKET" => ENV['VAGRANT_BUCKET']}, path: "build_ncbi.bash",
-        args: "Macaca_mulatta Mmul_10 GCF_003339765.1"
+        args: "Mmul_10 GCF_003339765.1 Macaca_mulatta"
 
     # https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/315/GCF_000002315.6_GRCg6a/
     config.vm.provision "shell", privileged: true, name: "NCBI/GRCg6a",
         env: {"BUCKET" => ENV['VAGRANT_BUCKET']}, path: "build_ncbi.bash",
-        args: "Gallus_gallus GRCg6a GCF_000002315.6"
+        args: "GRCg6a GCF_000002315.6 Gallus_gallus"
 
     # https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/880/755/GCF_002880755.1_Clint_PTRv2/
     config.vm.provision "shell", privileged: true, name: "NCBI/Clint_PTRv2",
         env: {"BUCKET" => ENV['VAGRANT_BUCKET']}, path: "build_ncbi.bash",
-        args: "Pan_troglodytes Clint_PTRv2 GCF_002880755.1"
+        args: "Clint_PTRv2 GCF_002880755.1 Pan_troglodytes"
 
     # https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/005/425/GCF_000005425.2_Build_4.0/
     config.vm.provision "shell", privileged: true, name: "NCBI/Build_4.0",
         env: {"BUCKET" => ENV['VAGRANT_BUCKET']}, path: "build_ncbi.bash",
-        args: "Oryza_sativa Build_4.0 GCF_000005425.2"
+        args: "Build_4.0 GCF_000005425.2 Oryza_sativa"
 
     # https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/003/025/GCF_000003025.6_Sscrofa11.1/
     config.vm.provision "shell", privileged: true, name: "NCBI/Sscrofa11.1",
         env: {"BUCKET" => ENV['VAGRANT_BUCKET']}, path: "build_ncbi.bash",
-        args: "Sus_scrofa Sscrofa11.1 GCF_000003025.6"
+        args: "Sscrofa11.1 GCF_000003025.6 Sus_scrofa"
 end
