@@ -1,0 +1,100 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# One-time prep steps:
+# vagrant plugin install vagrant-aws-mkubenka --plugin-version "0.7.2.pre.14"
+# vagrant box add dummy https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box
+
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'aws'
+
+# Workaround for newer versions of Vagrant, per:
+# https://github.com/mitchellh/vagrant-aws/issues/566
+class Hash
+  def slice(*keep_keys)
+    h = {}
+    keep_keys.each { |key| h[key] = fetch(key) if has_key?(key) }
+    h
+  end unless Hash.method_defined?(:slice)
+  def except(*less_keys)
+    slice(*keys - less_keys)
+  end unless Hash.method_defined?(:except)
+end
+
+Vagrant.configure("2") do |config|
+
+    config.vm.box = "dummy"
+    config.vm.synced_folder ".", "/vagrant", disabled: true
+
+    config.vm.provider :aws do |aws, override|
+        aws.aws_dir = ENV['HOME'] + "/.aws/"
+        aws.aws_profile = ENV['VAGRANT_AWS_PROFILE']
+        aws.region = ENV['VAGRANT_AWS_REGION']
+        aws.tags = { 'Application' => ENV['VAGRANT_APPLICATION'] }
+        aws.instance_type = ENV['VAGRANT_AWS_EC2_INSTANCE_TYPE']
+        aws.associate_public_ip = true
+        aws.keypair_name = ENV['VAGRANT_AWS_EC2_KEYPAIR']
+        aws.ami = ENV['VAGRANT_AWS_AMI']
+        aws.subnet_id = ENV['VAGRANT_AWS_SUBNET_ID']
+        aws.security_groups = [ENV['VAGRANT_AWS_SECURITY_GROUP']]
+        aws.block_device_mapping = [{
+            'DeviceName' => "/dev/sdf",
+            'VirtualName' => "ephemeral0",
+            'Ebs.VolumeSize' => 100,
+            'Ebs.DeleteOnTermination' => true,
+            'Ebs.VolumeType' => 'gp2'
+        }]
+        override.ssh.username = "ec2-user"
+        override.ssh.private_key_path = "~/.aws/" + ENV['VAGRANT_AWS_EC2_KEYPAIR'] + ".pem"
+        aws.region_config ENV['VAGRANT_AWS_REGION'] do |region|
+            region.spot_instance = true
+            region.spot_max_price = ENV['VAGRANT_AWS_EC2_BID_PRICE']
+        end
+    end
+
+    config.vm.provision "file", source: ENV['VAGRANT_AWS_CREDS'], destination: "/tmp/credentials"
+
+    config.vm.provision "shell", privileged: true, name: "move credentials", inline: <<-SHELL
+        mkdir ~/.aws && mv /tmp/credentials ~/.aws/ && chmod go-rwx ~/.aws/credentials
+    SHELL
+
+    config.vm.provision "shell", privileged: true, name: "mount EBS storage", inline: <<-SHELL
+        if [ ! -d /work ] ; then
+            dv=$(lsblk --output NAME,SIZE | awk '$2 == "100G"' | cut -f1 -d' ')
+            mkfs -q -t ext4 /dev/${dv}
+            mkdir /work
+            mount /dev/${dv} /work/
+            chmod a+w /work
+        fi
+    SHELL
+
+    config.vm.provision "shell", privileged: true, name: "install Linux packages", inline: <<-SHELL
+        yum update -q -y \
+            && yum install -q -y make git wget curl tar gcc gcc-c++ which zlib zlib-devel
+    SHELL
+
+    config.vm.provision "shell", privileged: true, name: "install TBB", env: {"ARCH" => ENV['VAGRANT_AWS_EC2_ARCH']}, path: "install_tbb.bash"
+
+    config.vm.provision "shell", privileged: true, name: "install BT2", env: {"ARCH" => ENV['VAGRANT_AWS_EC2_ARCH']}, path: "build_bt2.bash"
+
+    config.vm.provision "shell", privileged: true, name: "build ARS-UCD1.2", env: {"BUCKET" => ENV['VAGRANT_BUCKET']}, inline: <<-SHELL
+        cd /work \
+            && ASM="GRCz11" \
+            && ASM_LONG="GCF_000002035.6_${ASM}" \
+            && FA="${ASM_LONG}_genomic.fna" \
+            && wget "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/263/795/${ASM_LONG}/${FA}.gz" \
+            && gunzip "${FA}.gz" \
+            && echo "Sequences:" \
+            && grep '^>' ${FA} \
+            && /work/bowtie2/bowtie2-build-s --threads 8 "${FA}" "${ASM}" \
+            && rm -f "${FA}" \
+            && mkdir -p "${ASM}" \
+            && mv ${ASM}*.bt2 "${ASM}" \
+            && for i in 1.bt2 2.bt2 3.bt2 4.bt2 rev.1.bt2 rev.2.bt2 ; do \
+                   aws s3 cp --quiet "${ASM}/${ASM}.$i" s3://${BUCKET}/indexes/ ; \
+               done \
+            && zip "${ASM}.zip" -r "${ASM}" \
+            && rm -rf "${ASM}" \
+            && aws s3 cp --quiet "${ASM}.zip" s3://${BUCKET}/indexes/ \
+            && rm -f "${ASM}.zip"
+    SHELL
+end
