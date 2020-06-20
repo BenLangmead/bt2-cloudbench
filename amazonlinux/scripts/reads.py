@@ -97,7 +97,7 @@ def reverse_readline(filename, buf_size=8192):
 
 def parse_reads():
     reads = []
-    with open('get.sh', 'rt') as fh:
+    with open('../mk_mousereads/get.sh', 'rt') as fh:
         for ln in fh:
             toks = ln.split()
             if len(toks) > 0:
