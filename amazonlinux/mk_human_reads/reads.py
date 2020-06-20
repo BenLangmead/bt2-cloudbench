@@ -128,7 +128,6 @@ def go(args):
     if (os.path.exists(unsrt_fn) and args.resume) or not os.path.exists(unsrt_fn):
         n = 0
         ival = 100
-        last_seqlen = None
         print('*** Initial sampling run ***', file=sys.stderr)
         for rd, samp in zip(reads, samplers):
             print('Handling ' + rd, file=sys.stderr)
@@ -138,6 +137,7 @@ def go(args):
             nfile = 0
             bn1 = rd
             bn2 = rd[:-8] + '_2.fastq'
+            last_seqlen = None
             with open(bn1, 'rt') as r1:
                 with open(bn2, 'rt') as r2:
                     while True:
