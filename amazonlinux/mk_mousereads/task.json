@@ -1,3 +1,4 @@
 {
-  "task": "mk_mousereads"
+  "task": "mk_mousereads",
+  "instance_gb": "200"
 }
