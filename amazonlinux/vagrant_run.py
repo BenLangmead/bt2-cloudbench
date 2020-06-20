@@ -78,7 +78,7 @@ def load_json(json_fn, json_dict, needs_key=None):
 def parse_app_json(js):
     app = js['app']['name']
     bucket = js['app']['bucket']
-    return app, bucket, [('VAGRANT_APPLICATION', app), ('VAGRANT_BUCKET', bucket)]
+    return app, bucket, [('VAG_APPLICATION', app), ('VAG_BUCKET', bucket)]
 
 
 def parse_profile_json(js, prof):
@@ -86,9 +86,9 @@ def parse_profile_json(js, prof):
     security_group = js['profile'][prof]['security_group']
     aws_prof = js['profile'][prof]['name']
     return prof, aws_prof, region, security_group, \
-           [('VAGRANT_AWS_PROFILE', aws_prof),
-            ('VAGRANT_AWS_REGION', region),
-            ('VAGRANT_AWS_SECURITY_GROUP', security_group)]
+           [('VAG_PROFILE', aws_prof),
+            ('VAG_REGION', region),
+            ('VAG_SECURITY_GROUP', security_group)]
 
 
 def parse_instance_json(js, region, instance=None):
@@ -110,15 +110,24 @@ def parse_instance_json(js, region, instance=None):
         bid_price = js['ec2']['instance_type'][inst]['bid_price'][region]
 
     return inst, arch, ami, bid_price, \
-           [('VAGRANT_AWS_EC2_INSTANCE_TYPE', inst),
-            ('VAGRANT_AWS_EC2_ARCH', arch),
-            ('VAGRANT_AWS_AMI', ami),
-            ('VAGRANT_AWS_EC2_BID_PRICE', bid_price)]
+           [('VAG_EC2_INSTANCE_TYPE', inst),
+            ('VAG_EC2_ARCH', arch),
+            ('VAG_AMI', ami),
+            ('VAG_EC2_BID_PRICE', bid_price)]
+
+
+def must_have(key, js, js_name):
+    if key not in js:
+        raise RuntimeError('Key "%s" not present in %s JSON' % (key, js_name))
 
 
 def parse_task_json(js):
+    must_have('task', js, 'task')
+    must_have('volume_gb', js, 'task')
     task = js['task']
-    return task, [('VAGRANT_TASK', task)]
+    volume_gb = js['volume_gb']
+    return task, volume_gb, [('VAG_TASK', task),
+                             ('VAG_VOLUME_GB', volume_gb)]
 
 
 def choose_az_and_subnet(js, prof, region, inst):
@@ -133,8 +142,8 @@ def choose_az_and_subnet(js, prof, region, inst):
     if az not in js['profile'][prof]['subnet']:
         raise RuntimeError('No subnet specified for region/az %s/%s in profile %s' % (region, az, prof))
     subnet = js['profile'][prof]['subnet'][az]
-    return az, subnet, [('VAGRANT_AWS_SUBNET_ID', subnet),
-                        ('VAGRANT_AWS_AZ', az)]
+    return az, subnet, [('VAG_SUBNET_ID', subnet),
+                        ('VAG_AZ', az)]
 
 
 def load_aws_json(profile_json, app_json, task_json, inst_json, ec2_json,
@@ -150,11 +159,11 @@ def load_aws_json(profile_json, app_json, task_json, inst_json, ec2_json,
     app, bucket, app_param = parse_app_json(js)
     prof, aws_prof, region, security_group, profile_param = parse_profile_json(js, profile)
     inst, arch, ami, bid_price, instance_param = parse_instance_json(js, region, instance=instance)
-    task, task_param = parse_task_json(js)
+    task, volume_gb, task_param = parse_task_json(js)
     keypair = app + '-' + region
-    keypair_param = [('VAGRANT_AWS_EC2_KEYPAIR', keypair)]
+    keypair_param = [('VAG_EC2_KEYPAIR', keypair)]
     subnet, az, subnet_param = choose_az_and_subnet(js, prof, region, inst)
-    params = app_param + profile_param + instance_param + keypair_param + subnet_param + task_param + [('VAGRANT_AWS_CREDS', '.creds.tmp')]
+    params = app_param + profile_param + instance_param + keypair_param + subnet_param + task_param + [('VAG_CREDS', '.creds.tmp')]
     return app, region, subnet, az, security_group, ami, keypair, bid_price, inst, arch, prof, aws_prof, params
 
 

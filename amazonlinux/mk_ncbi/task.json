@@ -1,3 +1,4 @@
 {
-  "task": "mk_ncbi"
+  "task": "mk_ncbi",
+  "instance_gb": "200"
 }

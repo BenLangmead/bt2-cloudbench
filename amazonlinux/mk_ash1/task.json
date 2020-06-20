@@ -1,3 +1,4 @@
 {
-  "task": "mk_ash1"
+  "task": "mk_ash1",
+  "instance_gb": "200"
 }

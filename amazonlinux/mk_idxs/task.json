@@ -1,3 +1,4 @@
 {
-  "task": "mk_idxs"
+  "task": "mk_idxs",
+  "instance_gb": "200"
 }

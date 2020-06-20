@@ -1,3 +1,4 @@
 {
-  "task": "mk_igenomes"
+  "task": "mk_igenomes",
+  "instance_gb": "200"
 }
