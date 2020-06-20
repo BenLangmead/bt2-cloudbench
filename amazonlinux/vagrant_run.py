@@ -174,6 +174,11 @@ def run(profile, task, inst, dest_dir, ini_fn, section, no_destroy, creds_file='
     vagrant_args = ''
     if no_destroy:
         vagrant_args += ' --no-destroy-on-error'
+    for template_dir in ['scripts', 'vagrant_include']:
+        for base_fn in os.listdir(template_dir):
+            fn = os.path.join(template_dir, base_fn)
+            if os.path.isfile(fn):
+                shutil.copyfile(fn, os.path.join(dest_dir, base_fn))
     for base_fn in os.listdir(task):
         fn = os.path.join(task, base_fn)
         if os.path.isfile(fn):
