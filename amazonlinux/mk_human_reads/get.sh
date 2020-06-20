@@ -23,5 +23,5 @@ for fn in \
 do
 	bn=$(basename $fn)
 	bn=${bn/%.gz/}
-	curl ${fn} | gzip -dc | head -n ${NUM} > "${bn}"
+	curl ${fn} 2>/dev/null | gzip -dc | head -n ${NUM} > "${bn}"
 done
