@@ -1,4 +1,4 @@
 {
   "task": "mk_humanreads",
-  "instance_gb": "200"
+  "volume_gb": "200"
 }

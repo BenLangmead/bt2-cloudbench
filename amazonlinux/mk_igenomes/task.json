@@ -1,4 +1,4 @@
 {
   "task": "mk_igenomes",
-  "instance_gb": "200"
+  "volume_gb": "200"
 }
