@@ -40,6 +40,6 @@ Vagrant.configure("2") do |config|
         env: {"BUCKET" => ENV['VAG_BUCKET']}, inline: <<-SHELL
 
         cd /work \
-            && (for i in *.fastq ; do aws s3 cp --quiet $i s3://${BUCKET}/reads/human/ ; done || exit 1)
+            && (for i in mix*.fq ; do aws s3 cp --quiet $i s3://${BUCKET}/reads/human/ ; done || exit 1)
     SHELL
 end
