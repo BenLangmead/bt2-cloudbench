@@ -65,4 +65,9 @@ Vagrant.configure("2") do |config|
     config.vm.provision "shell", privileged: true, name: "NCBI/Sscrofa11.1",
         env: {"BUCKET" => ENV['VAG_BUCKET']}, path: "build_ncbi.bash",
         args: "Sscrofa11.1 GCF_000003025.6 Sus_scrofa"
+
+    # https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/300/595/GCA_002300595.1_Dmel_A4_1.0/
+    config.vm.provision "shell", privileged: true, name: "NCBI/Dmel_A4_1.0",
+        env: {"BUCKET" => ENV['VAG_BUCKET']}, path: "build_ncbi.bash",
+        args: "Dmel_A4_1.0 GCA_002300595.1 Drosophila_melanogaster"
 end
