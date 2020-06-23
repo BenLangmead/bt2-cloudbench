@@ -137,7 +137,7 @@ def go(args):
             nfile = 0
             bn1 = rd
             bn2 = rd[:-8] + '_2.fastq'
-            last_seqlen = None
+            last_seqlen1, last_seqlen2 = None, None
             with open(bn1, 'rt') as r1:
                 with open(bn2, 'rt') as r2:
                     while True:
@@ -149,17 +149,18 @@ def go(args):
                                 break
                             seq1 = r1.readline().rstrip()
                             seq2 = r2.readline().rstrip()
-                            assert last_seqlen is None or len(seq1) == last_seqlen
-                            last_seqlen = len(seq1)
+                            assert last_seqlen1 is None or len(seq1) == last_seqlen1
+                            assert last_seqlen2 is None or len(seq2) == last_seqlen2
+                            last_seqlen1 = len(seq1)
+                            last_seqlen2 = len(seq2)
                             assert len(seq1) > 0
-                            assert len(seq1) == len(seq2)
                             r1.readline()
                             r2.readline()
                             qual1 = r1.readline().rstrip()
                             qual2 = r2.readline().rstrip()
                             assert len(qual1) > 0
                             assert len(qual1) == len(seq1)
-                            assert len(qual1) == len(qual2)
+                            assert len(qual2) == len(seq2)
                             if len(seq1) > args.trim_to:
                                 seq1 = seq1[:args.trim_to]
                                 qual1 = qual1[:args.trim_to]
