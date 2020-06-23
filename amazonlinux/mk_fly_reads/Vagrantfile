@@ -1,0 +1,45 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# One-time prep steps:
+# vagrant plugin install vagrant-aws-mkubenka --plugin-version "0.7.2.pre.14"
+# vagrant box add dummy https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box
+
+ENV['VAG_DEFAULT_PROVIDER'] = 'aws'
+
+eval File.read("Vagrantfile.hash_workaround")
+
+Vagrant.configure("2") do |config|
+
+    eval File.read("Vagrantfile.aws")
+
+    config.vm.provision "file", source: ENV['VAG_CREDS'], destination: "/tmp/credentials"
+
+    config.vm.provision "shell", privileged: true, name: "move credentials", path: "move_creds.bash"
+
+    config.vm.provision "shell", privileged: true, name: "mount EBS storage",
+        env: {"VOLUME_GB" => ENV['VAG_VOLUME_GB']}, path: "mount_ebs.bash"
+
+    config.vm.provision "shell", privileged: true, name: "install Linux packages", inline: <<-SHELL
+        yum update -q -y \
+            && yum install -q -y wget curl tar which python3 python3-devel gcc gcc-c++
+    SHELL
+
+    config.vm.provision "shell", privileged: true, name: "install Python packages", inline: <<-SHELL
+        python3 -m pip install --upgrade pip
+        python3 -m pip install --user numpy
+    SHELL
+
+    config.vm.provision "file", source: "reads.py", destination: "/work/reads.py"
+    config.vm.provision "file", source: "get.sh", destination: "/work/get.sh"
+
+    config.vm.provision "shell", privileged: true, name: "get reads", path: "get.sh"
+    config.vm.provision "shell", privileged: true, name: "generate reads file", path: "reads100.sh"
+
+    config.vm.provision "shell", privileged: true, name: "upload reads",
+        env: {"BUCKET" => ENV['VAG_BUCKET']}, inline: <<-SHELL
+
+        cd /work \
+            && (for i in mix*.fq ; do aws s3 cp --quiet $i s3://${BUCKET}/reads/human/ ; done || exit 1)
+    SHELL
+end
