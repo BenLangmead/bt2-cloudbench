@@ -19,8 +19,6 @@ for fn in \
     ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR200/003/SRR2006603/SRR2006603_2.fastq.gz \
     ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR200/003/SRR2000043/SRR2000043_1.fastq.gz \
     ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR200/003/SRR2000043/SRR2000043_2.fastq.gz \
-    ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR204/008/SRR2043048/SRR2043048_1.fastq.gz \
-    ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR204/008/SRR2043048/SRR2043048_2.fastq.gz \
     ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR169/005/SRR1696895/SRR1696895_1.fastq.gz \
     ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR169/005/SRR1696895/SRR1696895_2.fastq.gz \
     ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR169/008/SRR1696818/SRR1696818_1.fastq.gz \
@@ -28,9 +26,7 @@ for fn in \
     ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR169/007/SRR1696807/SRR1696807_1.fastq.gz \
     ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR169/007/SRR1696807/SRR1696807_2.fastq.gz \
     ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR168/002/SRR1688222/SRR1688222_1.fastq.gz \
-    ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR168/002/SRR1688222/SRR1688222_2.fastq.gz \
-    ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR168/004/SRR1686964/SRR1686964_1.fastq.gz \
-    ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR168/004/SRR1686964/SRR1686964_2.fastq.gz
+    ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR168/002/SRR1688222/SRR1688222_2.fastq.gz
 do
 	bn=$(basename $fn)
 	bn=${bn/%.gz/}
