@@ -2,6 +2,8 @@
 
 set -ex
 
+cd /work
+
 # $1 can be full_analysis_set or full_plus_hs38d1_analysis_set
 # $2 can be GRCh38_noalt_as or GRCh38_noalt_decoy_as
 
