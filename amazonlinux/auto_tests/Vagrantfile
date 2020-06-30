@@ -23,6 +23,9 @@ Vagrant.configure("2") do |config|
     config.vm.provision "shell", privileged: true, name: "install Linux packages", inline: <<-SHELL
         yum update -q -y \
             && yum install -q -y make git wget curl tar gcc gcc-c++ which zlib zlib-devel perl-CPAN python3
+        export PERL_MM_USE_DEFAULT=1
+        cpan -i Sys::Info::Base
+        cpan -i Sys::Info
         cpan -i Math::Random
     SHELL
 
