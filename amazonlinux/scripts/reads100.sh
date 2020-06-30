@@ -12,4 +12,3 @@ chmod a+x reads.py
 	--reads-per-accession 2000000 \
 	--seed ${SEED} \
 	--trim-to 100
-
