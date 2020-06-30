@@ -11,7 +11,7 @@ mkdir -p /work/tbb \
     && rm -f ${VER}.tar.gz \
     && cd oneTBB-${VER} \
     && gmake -j8 \
-    && TBB_BASE=$(ls -d /work/tbb/oneTBB-${VER}/build/linux_${ARCH}_*release) \
+    && TBB_BASE=$(ls -d /work/tbb/oneTBB-${VER}/build/linux_*release) \
     && TBB_INCLUDE=/work/tbb/oneTBB-${VER}/include \
     && echo "export LIBRARY_PATH=\"\${LIBRARY_PATH}:${TBB_BASE}\"" >> ~/.bashrc \
     && echo "export LD_LIBRARY_PATH=\"\${LD_LIBRARY_PATH}:${TBB_BASE}\"" >> ~/.bashrc \
