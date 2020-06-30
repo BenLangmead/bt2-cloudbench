@@ -103,16 +103,18 @@ def parse_instance_json(js, region, instance=None):
         raise RuntimeError('No such instance type as "%s" in EC2 JSON' % inst)
 
     arch = js['ec2']['instance_type'][inst]['arch']
+    vcpus = js['ec2']['instance_type'][inst]['vcpus']
     ami = js['ec2']['ami'][region][arch]
     bid_price = None
     if 'bid_price' in js['ec2']['instance_type'][inst] and \
             region in js['ec2']['instance_type'][inst]['bid_price']:
         bid_price = js['ec2']['instance_type'][inst]['bid_price'][region]
 
-    return inst, arch, ami, bid_price, \
+    return inst, arch, ami, vcpus, bid_price, \
            [('VAG_EC2_INSTANCE_TYPE', inst),
             ('VAG_EC2_ARCH', arch),
             ('VAG_AMI', ami),
+            ('VAG_VCPUS', vcpus),
             ('VAG_EC2_BID_PRICE', bid_price)]
 
 
@@ -158,7 +160,7 @@ def load_aws_json(profile_json, app_json, task_json, inst_json, ec2_json,
 
     app, bucket, app_param = parse_app_json(js)
     prof, aws_prof, region, security_group, profile_param = parse_profile_json(js, profile)
-    inst, arch, ami, bid_price, instance_param = parse_instance_json(js, region, instance=instance)
+    inst, arch, ami, vcpus, bid_price, instance_param = parse_instance_json(js, region, instance=instance)
     task, volume_gb, task_param = parse_task_json(js)
     keypair = app + '-' + region
     keypair_param = [('VAG_EC2_KEYPAIR', keypair)]
