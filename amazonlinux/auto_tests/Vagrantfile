@@ -34,7 +34,7 @@ Vagrant.configure("2") do |config|
 
     config.vm.provision "shell", privileged: true, name: "build BT2",
         env: {"ARCH" => ENV['VAG_EC2_ARCH'], "THREADS" => ENV['VAG_VCPUS']},
-        path: "build_bt2_all.bash"
+        path: "build_bt2_all.bash", args: "bug_fixes"
 
     config.vm.provision "shell", privileged: true, name: "simple tests", inline: <<-SHELL
         cd /work/bowtie2 && make simple-test
