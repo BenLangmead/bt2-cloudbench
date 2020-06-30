@@ -135,6 +135,71 @@
           "us-east-2": ["2b", "2c"]
         }
       },
+      "m6g.4xlarge": {
+        "arch": "aarch64",
+        "memgb": 64,
+        "vcpus": 16,
+        "bid_price": {
+          "us-east-1": "0.30",
+          "us-east-2": "0.18"
+        },
+        "azs": {
+          "us-east-1": ["1a", "1b", "1c", "1f"],
+          "us-east-2": ["2b", "2c"]
+        }
+      },
+      "m6g.8xlarge": {
+        "arch": "aarch64",
+        "memgb": 128,
+        "vcpus": 32,
+        "bid_price": {
+          "us-east-1": "0.59",
+          "us-east-2": "0.35"
+        },
+        "azs": {
+          "us-east-1": ["1a", "1b", "1c", "1f"],
+          "us-east-2": ["2b", "2c"]
+        }
+      },
+      "m6g.12xlarge": {
+        "arch": "aarch64",
+        "memgb": 192,
+        "vcpus": 48,
+        "bid_price": {
+          "us-east-1": "0.87",
+          "us-east-2": "0.52"
+        },
+        "azs": {
+          "us-east-1": ["1a", "1b", "1c", "1f"],
+          "us-east-2": ["2b", "2c"]
+        }
+      },
+      "m6g.16xlarge": {
+        "arch": "aarch64",
+        "memgb": 256,
+        "vcpus": 64,
+        "bid_price": {
+          "us-east-1": "1.16",
+          "us-east-2": "0.69"
+        },
+        "azs": {
+          "us-east-1": ["1a", "1b", "1c", "1f"],
+          "us-east-2": ["2b", "2c"]
+        }
+      },
+      "m6g.metal": {
+        "arch": "aarch64",
+        "memgb": 256,
+        "vcpus": 64,
+        "bid_price": {
+          "us-east-1": "1.74",
+          "us-east-2": "1.05"
+        },
+        "azs": {
+          "us-east-1": ["1a", "1b", "1c", "1f"],
+          "us-east-2": ["2b", "2c"]
+        }
+      },
       "m5.xlarge": {
         "arch": "x86_64",
         "memgb": 16,
@@ -155,6 +220,19 @@
         "bid_price": {
           "us-east-1": "0.18",
           "us-east-2": "0.10"
+        },
+        "azs": {
+          "us-east-1": ["1a", "1b", "1c", "1e", "1f"],
+          "us-east-2": ["2b", "2c"]
+        }
+      },
+      "m5.4xlarge": {
+        "arch": "x86_64",
+        "memgb": 64,
+        "vcpus": 16,
+        "bid_price": {
+          "us-east-1": "0.36",
+          "us-east-2": "0.20"
         },
         "azs": {
           "us-east-1": ["1a", "1b", "1c", "1e", "1f"],
