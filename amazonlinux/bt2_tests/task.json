@@ -1,4 +1,4 @@
 {
-  "task": "auto_tests",
+  "task": "bt2_tests",
   "volume_gb": "100"
 }
