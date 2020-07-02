@@ -10,14 +10,13 @@ fi
 
 test -n "${THREADS}"
 
+git clone --recursive https://github.com/BenLangmead/bowtie.git /work/bowtie
+cd /work/bowtie
+git checkout "${BRANCH}"
+sed -i.bak 's/ [-]m64$//' Makefile
+
 if [ "${ARCH}" = "aarch64" ] ; then
-    git clone --recursive https://github.com/BenLangmead/bowtie.git /work/bowtie \
-        && cd /work/bowtie \
-        && git checkout "${BRANCH}" \
-        && make POPCNT_CAPABILITY=0 -j "${THREADS}" allall
+    make POPCNT_CAPABILITY=0 -j "${THREADS}" allall
 else
-    git clone --recursive https://github.com/BenLangmead/bowtie.git /work/bowtie \
-        && cd /work/bowtie \
-        && git checkout "${BRANCH}" \
-        && make -j "${THREADS}" allall
+    make -j "${THREADS}" allall
 fi
