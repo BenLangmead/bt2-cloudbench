@@ -1,0 +1,47 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# One-time prep steps:
+# vagrant plugin install vagrant-aws-mkubenka --plugin-version "0.7.2.pre.14"
+# vagrant box add dummy https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box
+
+ENV['VAG_DEFAULT_PROVIDER'] = 'aws'
+
+eval File.read("Vagrantfile.hash_workaround")
+
+Vagrant.configure("2") do |config|
+
+    eval File.read("Vagrantfile.aws")
+
+    config.vm.provision "file", source: ENV['VAG_CREDS'], destination: "/tmp/credentials"
+
+    config.vm.provision "shell", privileged: true, name: "move credentials", path: "move_creds.bash"
+
+    config.vm.provision "shell", privileged: true, name: "mount EBS storage",
+        env: {"VOLUME_GB" => ENV['VAG_VOLUME_GB']}, path: "mount_ebs.bash"
+
+    config.vm.provision "shell", privileged: true, name: "install Linux packages", inline: <<-SHELL
+        yum update -q -y \
+            && yum install -q -y make git wget curl tar gcc gcc-c++ which zlib zlib-devel python3
+    SHELL
+
+    config.vm.provision "shell", privileged: true, name: "install TBB",
+        env: {"ARCH" => ENV['VAG_EC2_ARCH']}, path: "install_tbb.bash"
+
+    config.vm.provision "shell", privileged: true, name: "build BT2",
+        env: {"ARCH" => ENV['VAG_EC2_ARCH'], "THREADS" => ENV['VAG_VCPUS']},
+        path: "build_bt2.bash", args: "v2.4.1"
+
+    config.vm.provision "shell", privileged: true, name: "get index",
+        path: "get_index.bash", args: "GRCh38_noalt_as"
+
+    config.vm.provision "shell", privileged: true, name: "get reads",
+        path: "get_reads.bash", args: "human"
+
+    config.vm.provision "shell", privileged: true, name: "benchmark",
+        env: {"THREADS" => ENV['VAG_VCPUS']}, path: "bench_bt2.bash"
+
+    config.vm.provision "shell", privileged: true, name: "clean up", inline: <<-SHELL
+        rm -rf /work/sam /work/reads /work/indexes
+    SHELL
+end
