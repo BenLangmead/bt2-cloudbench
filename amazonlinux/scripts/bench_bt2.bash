@@ -4,7 +4,7 @@ set -ex
 
 mkdir /work/sam
 
-THREADS="${1}"
+[[ -z "${THREADS}" ]] && echo "THREADS must be set" && exit 1
 
 /work/bowtie2/bowtie2-align-s \
   -x /work/index/idx \
