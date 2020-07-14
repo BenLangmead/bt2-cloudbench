@@ -35,9 +35,10 @@ Vagrant.configure("2") do |config|
         VER=1.3.0
         mkdir -p /work
         cd /work \
+            && git clone --recursive https://github.com/BenLangmead/bowtie.git /work/bowtie \
             && aws s3 cp s3://bt2-bench/zips/bowtie-${VER}-linux-aarch64.zip . \
             && unzip bowtie-${VER}-linux-aarch64.zip \
-            && mv bowtie-1.3.0-linux-aarch64 bowtie
+            && mv bowtie-1.3.0-linux-aarch64/* /work/bowtie/
     SHELL
 
     config.vm.provision "shell", privileged: true, name: "simple tests", inline: <<-SHELL
