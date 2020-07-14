@@ -23,6 +23,9 @@ Vagrant.configure("2") do |config|
     config.vm.provision "shell", privileged: true, name: "install Linux packages", inline: <<-SHELL
         yum update -q -y \
             && yum install -q -y make git wget curl tar gcc gcc-c++ which zlib zlib-devel perl-CPAN python3
+        cpan -i Clone
+        cpan -i Test:Deep
+        cpan -i Sys:Info
     SHELL
 
     config.vm.provision "shell", privileged: true, name: "install TBB",
@@ -36,17 +39,18 @@ Vagrant.configure("2") do |config|
         mkdir -p /work
         cd /work \
             && git clone --recursive https://github.com/BenLangmead/bowtie.git /work/bowtie-git \
+            && cd /work/bowtie-git \
+            && git checkout bug_fixes \
+            && cd /work \
             && aws s3 cp s3://bt2-bench/zips/bowtie-${VER}-linux-aarch64.zip . \
             && unzip bowtie-${VER}-linux-aarch64.zip \
             && mv bowtie-1.3.0-linux-aarch64 bowtie \
-            && cp /work/bowtie-git/Makefile /work/bowtie/
+            && cp -r /work/bowtie-git/scripts/test /work/bowtie/scripts/
     SHELL
 
     config.vm.provision "shell", privileged: true, name: "simple tests", inline: <<-SHELL
-        cd /work/bowtie && make simple-test
+        cd /work/bowtie \
+            && ./scripts/test/simple_tests.pl --bowtie=./bowtie --bowtie-build=./bowtie-build
     SHELL
 
-    config.vm.provision "shell", privileged: true, name: "random tests", inline: <<-SHELL
-        cd /work/bowtie && make BT2_PATH=/work/bowtie2 random-test
-    SHELL
 end
