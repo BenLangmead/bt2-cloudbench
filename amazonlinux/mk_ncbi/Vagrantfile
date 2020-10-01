@@ -36,6 +36,16 @@ Vagrant.configure("2") do |config|
         env: {"BUCKET" => ENV['VAG_BUCKET']}, path: "build_ncbi.bash",
         args: "ARS-UCD1.2 GCF_002263795.1 Bos_taurus"
 
+    # https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/002/285/GCA_000002285.3_canfam4/
+    config.vm.provision "shell", privileged: true, name: "NCBI/canfam4",
+        env: {"BUCKET" => ENV['VAG_BUCKET']}, path: "build_ncbi.bash",
+        args: "canfam4 GCA_000002285.3 Canis_familiaris"
+
+    # https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/635/GCF_000001635.27_GRCm39/
+    config.vm.provision "shell", privileged: true, name: "NCBI/GRCm39",
+        env: {"BUCKET" => ENV['VAG_BUCKET']}, path: "build_ncbi.bash",
+        args: "GRCm39 GCF_000001635.27 Mus_musculus"
+
     # https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/035/GCF_000002035.6_GRCz11/
     config.vm.provision "shell", privileged: true, name: "NCBI/GRCz11",
         env: {"BUCKET" => ENV['VAG_BUCKET']}, path: "build_ncbi.bash",
@@ -45,6 +55,11 @@ Vagrant.configure("2") do |config|
     config.vm.provision "shell", privileged: true, name: "NCBI/Mmul_10",
         env: {"BUCKET" => ENV['VAG_BUCKET']}, path: "build_ncbi.bash",
         args: "Mmul_10 GCF_003339765.1 Macaca_mulatta"
+
+    # https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/902/167/145/GCF_902167145.1_Zm-B73-REFERENCE-NAM-5.0/GCF_902167145.1_Zm-B73-REFERENCE-NAM-5.0_genomic.fna.gz
+    config.vm.provision "shell", privileged: true, name: "NCBI/Zm-B73-REFERENCE-NAM-5.0",
+        env: {"BUCKET" => ENV['VAG_BUCKET']}, path: "build_ncbi.bash",
+        args: "Zm-B73-REFERENCE-NAM-5.0 GCF_902167145.1 Zea_mays"
 
     # https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/315/GCF_000002315.6_GRCg6a/
     config.vm.provision "shell", privileged: true, name: "NCBI/GRCg6a",
@@ -70,4 +85,10 @@ Vagrant.configure("2") do |config|
     config.vm.provision "shell", privileged: true, name: "NCBI/Dmel_A4_1.0",
         env: {"BUCKET" => ENV['VAG_BUCKET']}, path: "build_ncbi.bash",
         args: "Dmel_A4_1.0 GCA_002300595.1 Drosophila_melanogaster"
+
+    # https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/735/GCF_000001735.4_TAIR10.1/GCF_000001735.4_TAIR10.1_genomic.fna.gz
+    config.vm.provision "shell", privileged: true, name: "NCBI/TAIR10.1",
+        env: {"BUCKET" => ENV['VAG_BUCKET']}, path: "build_ncbi.bash",
+        args: "TAIR10.1 GCF_000001735.4 Arabidopsis_thaliana"
+
 end
