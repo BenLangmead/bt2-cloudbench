@@ -46,4 +46,22 @@ Vagrant.configure("2") do |config|
             && aws s3 cp --quiet "${ASM}.zip" s3://${BUCKET}/indexes/ \
             && rm -f "${ASM}.zip"
     SHELL
+
+    config.vm.provision "shell", privileged: true, name: "build ASH1v2", env: {"BUCKET" => ENV['VAG_BUCKET']}, inline: <<-SHELL
+        cd /work \
+            && ASM="Ash1_v2.0" \
+            && wget "ftp://ftp.ccb.jhu.edu/pub/data/Homo_sapiens/Ash1/v2.0/Assembly/${ASM}.fa.gz" \
+            && gunzip "${ASM}.fa.gz" \
+            && /work/bowtie2/bowtie2-build-s --threads 8 "${ASM}.fa" "${ASM}" \
+            && rm -f "${ASM}.fa" \
+            && mkdir -p "${ASM}" \
+            && mv ${ASM}*.bt2 "${ASM}" \
+            && for i in 1.bt2 2.bt2 3.bt2 4.bt2 rev.1.bt2 rev.2.bt2 ; do \
+                   aws s3 cp --quiet "${ASM}/${ASM}.$i" s3://${BUCKET}/indexes/ ; \
+               done \
+            && zip "${ASM}.zip" -r "${ASM}" \
+            && rm -rf "${ASM}" \
+            && aws s3 cp --quiet "${ASM}.zip" s3://${BUCKET}/indexes/ \
+            && rm -f "${ASM}.zip"
+    SHELL
 end
