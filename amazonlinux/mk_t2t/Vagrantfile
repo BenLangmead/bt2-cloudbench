@@ -33,10 +33,10 @@ Vagrant.configure("2") do |config|
         cd /work \
             && ORIG_ASM="chm13.draft_v1.0" \
             && ASM="chm13.draft_v1.0_plusY" \
-            && wget "https://s3.amazonaws.com/nanopore-human-wgs/chm13/assemblies/${ORIG_ASM}.fasta.gz" \
+            && wget --quiet "https://s3.amazonaws.com/nanopore-human-wgs/chm13/assemblies/${ORIG_ASM}.fasta.gz" \
             && gunzip "${ORIG_ASM}.fasta.gz" \
-            && mv "${ORIG_ASM}.fasta" "${ASM}.fa"
-            && curl ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.28_GRCh38.p13/GCA_000001405.28_GRCh38.p13_assembly_structure/Primary_Assembly/assembled_chromosomes/FASTA/chrY.fna.gz | gzip -dc | sed 's/^>/>chrY /' >> "${ASM}.fa"
+            && mv "${ORIG_ASM}.fasta" "${ASM}.fa" \
+            && curl ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.28_GRCh38.p13/GCA_000001405.28_GRCh38.p13_assembly_structure/Primary_Assembly/assembled_chromosomes/FASTA/chrY.fna.gz | gzip -dc | sed 's/^>/>chrY /' >> "${ASM}.fa" \
             && /work/bowtie2/bowtie2-build-s --threads 8 "${ASM}.fa" "${ASM}" \
             && rm -f "${ASM}.fa" \
             && mkdir -p "${ASM}" \
