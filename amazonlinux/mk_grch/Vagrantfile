@@ -33,10 +33,10 @@ Vagrant.configure("2") do |config|
 
     config.vm.provision "shell", privileged: true, name: "GRCh38 no decoy",
         env: {"BUCKET" => ENV['VAG_BUCKET']}, path: "build_grch38.bash",
-        args: "full_analysis_set GRCh38_noalt_as"
+        args: "no_alt_analysis_set GRCh38_noalt_as"
 
     config.vm.provision "shell", privileged: true, name: "GRCh38 with decoy",
         env: {"BUCKET" => ENV['VAG_BUCKET']}, path: "build_grch38.bash",
-        args: "full_plus_hs38d1_analysis_set GRCh38_noalt_decoy_as"
+        args: "no_alt_plus_hs38d1_analysis_set GRCh38_noalt_decoy_as"
 
 end
