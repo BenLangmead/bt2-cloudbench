@@ -125,9 +125,10 @@ def must_have(key, js, js_name):
 
 def parse_task_json(js):
     must_have('task', js, 'task')
-    must_have('volume_gb', js, 'task')
     task = js['task']
-    volume_gb = js['volume_gb']
+    volume_gb = None
+    if 'volume_gb' in js:
+        volume_gb = js['volume_gb']
     return task, volume_gb, [('VAG_TASK', task),
                              ('VAG_VOLUME_GB', volume_gb)]
 
@@ -208,21 +209,15 @@ def run(profile, task, inst, dest_dir, ini_fn, section, no_destroy, creds_file='
     creds_scr = os.path.join(dest_dir, 'creds.py')
     with open(run_scr, 'wt') as fh:
         _write_exports(fh)
-        fh.write('set -o pipefail\n')
         fh.write('./creds.py && \\\n')
         fh.write('vagrant up %s 2>&1 | tee vagrant.log && \\\n' % vagrant_args)
         fh.write('vagrant destroy -f\n')
-        fh.write('level=$?\n')
         fh.write('rm -f .creds.tmp\n')
-        fh.write('exit ${level}\n')
     with open(run_nd_scr, 'wt') as fh:
         _write_exports(fh)
-        fh.write('set -o pipefail\n')
         fh.write('./creds.py && \\\n')
         fh.write('vagrant up %s 2>&1 | tee vagrant.log\n' % vagrant_args)
-        fh.write('level=$?\n')
         fh.write('rm -f .creds.tmp\n')
-        fh.write('exit ${level}\n')
     with open(destroy_scr, 'wt') as fh:
         _write_exports(fh)
         fh.write('touch .creds.tmp && vagrant destroy -f\n')
