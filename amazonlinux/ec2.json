@@ -104,6 +104,15 @@
           "us-east-2": ["2b", "2c"]
         }
       },
+      "m6gd.4xlarge": {
+        "arch": "aarch64",
+        "memgb": 64,
+        "vcpus": 16,
+        "azs": {
+          "us-east-1": ["1a", "1b", "1c", "1f"],
+          "us-east-2": ["2b", "2c"]
+        }
+      },
       "m6g.8xlarge": {
         "arch": "aarch64",
         "memgb": 128,
