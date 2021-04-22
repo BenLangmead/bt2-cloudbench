@@ -1,3 +1,5 @@
 {
-  "instance": "m5.2xlarge"
+  "instance": "m5.2xlarge",
+  "volume_type": "gp3",
+  "volume_gb": "100"
 }
