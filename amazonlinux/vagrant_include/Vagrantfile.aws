@@ -17,12 +17,13 @@ config.vm.provider :aws do |aws, override|
         'VirtualName' => "ephemeral0",
         'Ebs.VolumeSize' => ENV['VAG_VOLUME_GB'],
         'Ebs.DeleteOnTermination' => true,
-        'Ebs.VolumeType' => 'gp2'
+        'Ebs.VolumeType' => 'gp3'
     }]
     override.ssh.username = "ec2-user"
     override.ssh.private_key_path = "~/.aws/" + ENV['VAG_EC2_KEYPAIR'] + ".pem"
     aws.region_config ENV['VAG_REGION'] do |region|
         region.spot_instance = true
-        region.spot_max_price = ENV['VAG_EC2_BID_PRICE']
+        # Use the default (the on-demand price)
+        #region.spot_max_price = ENV['VAG_EC2_BID_PRICE']
     end
 end
