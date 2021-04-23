@@ -1,3 +1,5 @@
 {
-  "task": "bench-bt2"
+  "task": "bench-bt2",
+  "volume_type": "gp3",
+  "volume_gb": "100"
 }

@@ -1,5 +1,3 @@
 {
-  "instance": "m6g.2xlarge",
-  "volume_type": "gp3",
-  "volume_gb": "100"
+  "instance": "m6g.2xlarge"
 }
