@@ -131,9 +131,9 @@ def parse_task_json(js):
         volume_gb = js['volume_gb']
     return task, volume_gb, [('VAG_TASK', task),
                              ('VAG_VOLUME_GB', volume_gb),  # TODO: include "EBS" in volume name
-                             ('VAG_VOLUME_TYPE', js.get('volume_type', default='gp3')),
-                             ('VAG_USE_INSTANCE_STORE', js.get('use_instance_store', default='None')),
-                             ('VAG_VOLUME_NAME', js.get('volume_name', default='None'))]
+                             ('VAG_VOLUME_TYPE', js.get('volume_type', 'gp3')),
+                             ('VAG_USE_INSTANCE_STORE', js.get('use_instance_store', 'None')),
+                             ('VAG_VOLUME_NAME', js.get('volume_name', 'None'))]
 
 
 def choose_az_and_subnet(js, prof, region, inst):
