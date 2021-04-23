@@ -1,0 +1,5 @@
+{
+  "instance": "c5.9xlarge",
+  "volume_type": "gp3",
+  "volume_gb": "100"
+}

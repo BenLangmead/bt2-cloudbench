@@ -1,0 +1,5 @@
+{
+  "instance": "c6gd.2xlarge",
+  "use_instance_store": "true",
+  "volume_name": "nvme1n1"
+}

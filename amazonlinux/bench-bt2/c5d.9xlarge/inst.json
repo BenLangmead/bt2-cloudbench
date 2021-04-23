@@ -1,0 +1,5 @@
+{
+  "instance": "c5d.9xlarge",
+  "use_instance_store": "true",
+  "volume_name": "nvme1n1"
+}

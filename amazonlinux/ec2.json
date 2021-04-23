@@ -230,10 +230,38 @@
           "us-east-2": ["2a", "2b"]
         }
       },
+      "c5a.2xlarge": {
+        "arch": "x86_64",
+        "memgb": 16,
+        "vcpus": 8,
+        "azs": {
+          "us-east-1": ["1a", "1b", "1c", "1e", "1f"],
+          "us-east-2": ["2a", "2b", "2c"]
+        }
+      },
       "c5a.4xlarge": {
         "arch": "x86_64",
         "memgb": 32,
         "vcpus": 16,
+        "azs": {
+          "us-east-1": ["1a", "1b", "1c", "1e", "1f"],
+          "us-east-2": ["2a", "2b", "2c"]
+        }
+      },
+      "c5a.8xlarge": {
+        "arch": "x86_64",
+        "memgb": 64,
+        "vcpus": 32,
+        "azs": {
+          "us-east-1": ["1a", "1b", "1c", "1e", "1f"],
+          "us-east-2": ["2a", "2b", "2c"]
+        }
+      },
+      "c5ad.2xlarge": {
+        "arch": "x86_64",
+        "memgb": 16,
+        "vcpus": 8,
+        "instance_store_gb": 300,
         "azs": {
           "us-east-1": ["1a", "1b", "1c", "1e", "1f"],
           "us-east-2": ["2a", "2b", "2c"]
@@ -249,10 +277,20 @@
           "us-east-2": ["2a", "2b", "2c"]
         }
       },
-      "c5a.8xlarge": {
+      "c5ad.8xlarge": {
         "arch": "x86_64",
         "memgb": 64,
         "vcpus": 32,
+        "instance_store_gb": 1200,
+        "azs": {
+          "us-east-1": ["1a", "1b", "1c", "1e", "1f"],
+          "us-east-2": ["2a", "2b", "2c"]
+        }
+      },
+      "c5.2xlarge": {
+        "arch": "x86_64",
+        "memgb": 16,
+        "vcpus": 8,
         "azs": {
           "us-east-1": ["1a", "1b", "1c", "1e", "1f"],
           "us-east-2": ["2a", "2b", "2c"]
@@ -262,6 +300,25 @@
         "arch": "x86_64",
         "memgb": 32,
         "vcpus": 16,
+        "azs": {
+          "us-east-1": ["1a", "1b", "1c", "1e", "1f"],
+          "us-east-2": ["2a", "2b", "2c"]
+        }
+      },
+      "c5.9xlarge": {
+        "arch": "x86_64",
+        "memgb": 72,
+        "vcpus": 36,
+        "azs": {
+          "us-east-1": ["1a", "1b", "1c", "1e", "1f"],
+          "us-east-2": ["2a", "2b", "2c"]
+        }
+      },
+      "c5d.2xlarge": {
+        "arch": "x86_64",
+        "memgb": 16,
+        "vcpus": 8,
+        "instance_store_gb": 200,
         "azs": {
           "us-east-1": ["1a", "1b", "1c", "1e", "1f"],
           "us-east-2": ["2a", "2b", "2c"]
@@ -277,10 +334,20 @@
           "us-east-2": ["2a", "2b", "2c"]
         }
       },
-      "c5.9xlarge": {
+      "c5d.9xlarge": {
         "arch": "x86_64",
         "memgb": 72,
         "vcpus": 36,
+        "instance_store_gb": 900,
+        "azs": {
+          "us-east-1": ["1a", "1b", "1c", "1e", "1f"],
+          "us-east-2": ["2a", "2b", "2c"]
+        }
+      },
+      "c6g.2xlarge": {
+        "arch": "aarch64",
+        "memgb": 16,
+        "vcpus": 8,
         "azs": {
           "us-east-1": ["1a", "1b", "1c", "1e", "1f"],
           "us-east-2": ["2a", "2b", "2c"]
@@ -295,11 +362,40 @@
           "us-east-2": ["2a", "2b", "2c"]
         }
       },
+      "c6g.8xlarge": {
+        "arch": "aarch64",
+        "memgb": 64,
+        "vcpus": 32,
+        "azs": {
+          "us-east-1": ["1a", "1b", "1c", "1e", "1f"],
+          "us-east-2": ["2a", "2b", "2c"]
+        }
+      },
+      "c6gd.2xlarge": {
+        "arch": "aarch64",
+        "memgb": 16,
+        "vcpus": 8,
+        "instance_store_gb": 474,
+        "azs": {
+          "us-east-1": ["1a", "1b", "1c", "1e", "1f"],
+          "us-east-2": ["2a", "2b", "2c"]
+        }
+      },
       "c6gd.4xlarge": {
         "arch": "aarch64",
         "memgb": 32,
         "vcpus": 16,
         "instance_store_gb": 950,
+        "azs": {
+          "us-east-1": ["1a", "1b", "1c", "1e", "1f"],
+          "us-east-2": ["2a", "2b", "2c"]
+        }
+      },
+      "c6gd.8xlarge": {
+        "arch": "aarch64",
+        "memgb": 64,
+        "vcpus": 32,
+        "instance_store_gb": 1900,
         "azs": {
           "us-east-1": ["1a", "1b", "1c", "1e", "1f"],
           "us-east-2": ["2a", "2b", "2c"]
