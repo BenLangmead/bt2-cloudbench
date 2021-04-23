@@ -5,10 +5,14 @@ set -ex
 expt_name=bench-bt2
 profile=jhu_ue2
 
-for i in m5.4xlarge m6g.4xlarge m6gd.4xlarge c5n.18xlarge \
-         c5.4xlarge c5a.4xlarge c6g.4xlarge \
-         c5d.4xlarge c5ad.4xlarge c6gd.4xlarge
-do
+instances=""
+for typ in c5 c5d c5a c5ad c6g c6gd m5 m5d m6g m6gd m5a m5ad ; do
+  for i in 2 4 8 ; do
+    instances="${instances} ${typ}.${i}xlarge"
+  done
+done
+
+for i in ${instances} ; do
     nm="${expt_name}.${i}"
     rm -rf ".${nm}"
     screen -S ${nm} -dm bash -c \
